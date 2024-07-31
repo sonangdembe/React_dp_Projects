@@ -1,6 +1,28 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-const Form = ({type}) => {
+const Form = ({type, onSubmit}) => {
+
+
+	const [data,setData] =useState({
+		title:'',
+		subtitle:'',
+		description:'',
+		
+		image:''
+	})
+
+	const handleChange =(e)=>{
+      const {name,value} = e.target
+       setData({
+		...Data,
+		[name] : name === 'image' ? e.target.files[0]: value
+		// e.target.value doesnn't containts the image in e.taeget.value instead it consist in e.target.value[0]
+	    })
+	}
+	const handleSubmit = (e) =>{
+		e.prevenDefault()
+		onSubmit(data)
+	}
 
 	
   return (
@@ -8,24 +30,44 @@ const Form = ({type}) => {
 
 	<div class="container my-3 px-4 lg:px-20 ">
 
+		<form>
 		<div class="w-full p-8 my-2 md:px-12 lg:w-9/12 lg:pl-20 lg:pr-40 mr-auto rounded-2xl shadow-2xl mx-25">
 			<div class="flex">
 				<h1 class="font-bold uppercase text-5xl">{type} <br /> Blog</h1>
 			</div>
-		<form >
+
+		<form onSubmit={handleSubmit} >
 		<div class="grid grid-cols-1 gap-5 md:grid-cols-2 mt-5">
+
 				<input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
-            type="text" placeholder="Title*" name='title' required />
-				<input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
-            type="text" placeholder="Subtitle*" name='subtitle'  required/>
-				<input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
-            type="file" name='image' />
-				<input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
-            type="number" placeholder="Category*" name='category' required/>
+            type="text" placeholder="Title*" name='title' onChange={handleChange} required />
+
+
+				<input class="w-full bg-gray-100 text-gray-900 mt-2 p-3
+				 rounded-lg focus:outline-none focus:shadow-outline"
+            type="text" onChange={handleChange} placeholder="Subtitle*" 
+			name='subtitle'  required/>
+
+
+				<input class="w-full bg-gray-100 text-gray-900 mt-2
+				 p-3 rounded-lg focus:outline-none focus:shadow-outline"
+            type="file" name='image'  onChange={handleChange} />
+
+
+				<input class="w-full bg-gray-100 text-gray-900
+				 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
+            type="number" onChange={handleChange} placeholder="Category*"
+			 name='category' required/>
+
+
         </div>
 				<div class="my-4">
-					<textarea required placeholder="Description*" name='description' class="w-full h-32 bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"></textarea>
+					<textarea onChange={handleChange} required 
+					placeholder="Description*" name='description' class="w-full 
+					h-32 bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"></textarea>
 				</div>
+
+				
 				<div class="my-2 w-1/2 lg:w-1/4">
 					<button class="uppercase text-sm font-bold tracking-wide bg-blue-900 text-gray-100 p-3 rounded-lg w-full 
                       focus:outline-none focus:shadow-outline">
@@ -33,7 +75,9 @@ const Form = ({type}) => {
           </button>
 				</div>
 		</form>
+			
 			</div>
+		</form>
 
 
     </div>
